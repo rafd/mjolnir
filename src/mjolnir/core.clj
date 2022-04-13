@@ -65,7 +65,7 @@
 (defn slurp-bans
   [opts]
   (let [dir (io/file (opts :mjolnir.opts/storage-directory))]
-    (when (.exists dir)
+    (if (.exists dir)
       (->> (file-seq dir)
            (remove (fn [f] (.isDirectory f)))
            (mapcat (fn [f]
@@ -73,7 +73,8 @@
                        (->> (string/split (slurp f) #"\n")
                             (map (fn [value]
                                    [factor-id value]))))))
-           set))))
+           set)
+      #{})))
 
 (defn load!
   "Fills up ban values from persisted files"

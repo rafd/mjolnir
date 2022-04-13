@@ -17,6 +17,10 @@
        (map (fn [[factor-id factor-fn]]
               [factor-id (normalize (factor-fn request))]))))
 
+(defn clear!
+  [{:mjolnir.context/keys [ban-store fail-cache]}]
+  (reset! ban-store #{}))
+
 (defn ban!
   [ban-store factor-key]
   (swap! ban-store conj factor-key))
